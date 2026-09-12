@@ -1,0 +1,931 @@
+{
+  "schemaVersion": 2,
+  "taskId": "3d32e670-dca3-4b93-8cbe-9772472f6610",
+  "revision": 0,
+  "demo": true,
+  "evaluationDate": "2026-06-15",
+  "request": {
+    "destinationId": "sim-cloudwater",
+    "destination": "云水古城（虚构实训目的地）",
+    "startDate": "2026-07-18",
+    "days": 2,
+    "adults": 2,
+    "children": 1,
+    "seniors": 1,
+    "budget": 3000,
+    "maxWalkingMinutes": 70,
+    "weather": "clear",
+    "avoidOutdoorInRain": true,
+    "interests": [
+      "非遗",
+      "亲子"
+    ],
+    "dietary": "清淡且不含花生",
+    "accessibility": "长者不适合长时间步行",
+    "dayWindows": [
+      {
+        "day": 1,
+        "start": "09:00",
+        "end": "21:30",
+        "minActivities": 2,
+        "requiredMeals": [
+          "lunch"
+        ]
+      },
+      {
+        "day": 2,
+        "start": "09:00",
+        "end": "17:00",
+        "minActivities": 1,
+        "requiredMeals": [
+          "lunch"
+        ]
+      }
+    ],
+    "requiredNights": [
+      1
+    ],
+    "selfArrangedNights": [],
+    "dietaryRequirements": {
+      "excludedAllergens": [
+        "花生"
+      ],
+      "avoidCrossContact": true,
+      "dietTypes": [
+        "清淡"
+      ]
+    },
+    "accessibilityRequirements": {
+      "wheelchairRoute": false,
+      "stepFree": false,
+      "accessibleRoom": false,
+      "accessibleVehicle": false
+    },
+    "unresolvedRequirements": []
+  },
+  "resources": [
+    {
+      "destinationId": "sim-cloudwater",
+      "areaId": "east",
+      "durationMinutes": 120,
+      "openStart": "09:00",
+      "openEnd": "17:00",
+      "indoor": true,
+      "tags": [
+        "非遗",
+        "亲子"
+      ],
+      "adultPrice": 120,
+      "childPrice": 60,
+      "seniorPrice": 60,
+      "unitPrice": null,
+      "capacityPerSlot": 30,
+      "capacityPerRoom": null,
+      "accessibleRoomsAvailable": null,
+      "allergenFree": {},
+      "crossContactControlled": {},
+      "dietSupport": {},
+      "accessibility": {
+        "wheelchairRoute": "yes",
+        "stepFree": "yes",
+        "accessibleRoom": "unknown",
+        "accessibleVehicle": "unknown"
+      },
+      "pricingEvidenceIds": [
+        "SIM-F01"
+      ],
+      "openingEvidenceIds": [
+        "SIM-F01"
+      ],
+      "capacityEvidenceIds": [
+        "SIM-F01"
+      ],
+      "suitabilityEvidenceIds": [
+        "SIM-F01"
+      ],
+      "id": "heritage",
+      "name": "云水非遗工坊",
+      "type": "activity",
+      "location": "古城东区",
+      "priceMode": "ticket"
+    },
+    {
+      "destinationId": "sim-cloudwater",
+      "areaId": "south",
+      "durationMinutes": 120,
+      "openStart": "08:00",
+      "openEnd": "18:00",
+      "indoor": false,
+      "tags": [
+        "自然",
+        "摄影"
+      ],
+      "adultPrice": 80,
+      "childPrice": 40,
+      "seniorPrice": 40,
+      "unitPrice": null,
+      "capacityPerSlot": 100,
+      "capacityPerRoom": null,
+      "accessibleRoomsAvailable": null,
+      "allergenFree": {},
+      "crossContactControlled": {},
+      "dietSupport": {},
+      "accessibility": {
+        "wheelchairRoute": "yes",
+        "stepFree": "yes",
+        "accessibleRoom": "unknown",
+        "accessibleVehicle": "unknown"
+      },
+      "pricingEvidenceIds": [
+        "SIM-F02"
+      ],
+      "openingEvidenceIds": [
+        "SIM-F02"
+      ],
+      "capacityEvidenceIds": [
+        "SIM-F02"
+      ],
+      "suitabilityEvidenceIds": [
+        "SIM-F02"
+      ],
+      "id": "garden",
+      "name": "青岚湿地花园",
+      "type": "activity",
+      "location": "古城南区",
+      "priceMode": "ticket"
+    },
+    {
+      "destinationId": "sim-cloudwater",
+      "areaId": "center",
+      "durationMinutes": 120,
+      "openStart": "09:00",
+      "openEnd": "17:00",
+      "indoor": true,
+      "tags": [
+        "文化",
+        "亲子"
+      ],
+      "adultPrice": 60,
+      "childPrice": 30,
+      "seniorPrice": 0,
+      "unitPrice": null,
+      "capacityPerSlot": 60,
+      "capacityPerRoom": null,
+      "accessibleRoomsAvailable": null,
+      "allergenFree": {},
+      "crossContactControlled": {},
+      "dietSupport": {},
+      "accessibility": {
+        "wheelchairRoute": "yes",
+        "stepFree": "yes",
+        "accessibleRoom": "unknown",
+        "accessibleVehicle": "unknown"
+      },
+      "pricingEvidenceIds": [
+        "SIM-F03"
+      ],
+      "openingEvidenceIds": [
+        "SIM-F03"
+      ],
+      "capacityEvidenceIds": [
+        "SIM-F03"
+      ],
+      "suitabilityEvidenceIds": [
+        "SIM-F03"
+      ],
+      "id": "museum",
+      "name": "城史互动馆",
+      "type": "activity",
+      "location": "古城中心",
+      "priceMode": "ticket"
+    },
+    {
+      "destinationId": "sim-cloudwater",
+      "areaId": "center",
+      "durationMinutes": 150,
+      "openStart": "10:00",
+      "openEnd": "20:00",
+      "indoor": true,
+      "tags": [
+        "非遗",
+        "数字媒体",
+        "亲子"
+      ],
+      "adultPrice": null,
+      "childPrice": null,
+      "seniorPrice": null,
+      "unitPrice": 130,
+      "capacityPerSlot": 20,
+      "capacityPerRoom": null,
+      "accessibleRoomsAvailable": null,
+      "allergenFree": {},
+      "crossContactControlled": {},
+      "dietSupport": {},
+      "accessibility": {
+        "wheelchairRoute": "yes",
+        "stepFree": "yes",
+        "accessibleRoom": "unknown",
+        "accessibleVehicle": "unknown"
+      },
+      "pricingEvidenceIds": [
+        "SIM-F04"
+      ],
+      "openingEvidenceIds": [
+        "SIM-F04"
+      ],
+      "capacityEvidenceIds": [
+        "SIM-F04"
+      ],
+      "suitabilityEvidenceIds": [
+        "SIM-F04"
+      ],
+      "id": "craft",
+      "name": "数字宋韵创作室",
+      "type": "activity",
+      "location": "古城中心",
+      "priceMode": "per_person"
+    },
+    {
+      "destinationId": "sim-cloudwater",
+      "areaId": "east",
+      "durationMinutes": 30,
+      "openStart": "14:00",
+      "openEnd": "23:00",
+      "indoor": true,
+      "tags": [
+        "文化"
+      ],
+      "adultPrice": null,
+      "childPrice": null,
+      "seniorPrice": null,
+      "unitPrice": 450,
+      "capacityPerSlot": null,
+      "capacityPerRoom": 2,
+      "accessibleRoomsAvailable": 0,
+      "allergenFree": {},
+      "crossContactControlled": {},
+      "dietSupport": {},
+      "accessibility": {
+        "wheelchairRoute": "yes",
+        "stepFree": "yes",
+        "accessibleRoom": "no",
+        "accessibleVehicle": "unknown"
+      },
+      "pricingEvidenceIds": [
+        "SIM-F05"
+      ],
+      "openingEvidenceIds": [
+        "SIM-F05"
+      ],
+      "capacityEvidenceIds": [
+        "SIM-F05"
+      ],
+      "suitabilityEvidenceIds": [
+        "SIM-F05"
+      ],
+      "id": "inn",
+      "name": "栖水文化客栈·双床房",
+      "type": "stay",
+      "location": "古城东区",
+      "priceMode": "per_room_night"
+    },
+    {
+      "destinationId": "sim-cloudwater",
+      "areaId": "center",
+      "durationMinutes": 30,
+      "openStart": "14:00",
+      "openEnd": "23:00",
+      "indoor": true,
+      "tags": [
+        "亲子"
+      ],
+      "adultPrice": null,
+      "childPrice": null,
+      "seniorPrice": null,
+      "unitPrice": 720,
+      "capacityPerSlot": null,
+      "capacityPerRoom": 4,
+      "accessibleRoomsAvailable": 2,
+      "allergenFree": {},
+      "crossContactControlled": {},
+      "dietSupport": {},
+      "accessibility": {
+        "wheelchairRoute": "yes",
+        "stepFree": "yes",
+        "accessibleRoom": "yes",
+        "accessibleVehicle": "unknown"
+      },
+      "pricingEvidenceIds": [
+        "SIM-F06"
+      ],
+      "openingEvidenceIds": [
+        "SIM-F06"
+      ],
+      "capacityEvidenceIds": [
+        "SIM-F06"
+      ],
+      "suitabilityEvidenceIds": [
+        "SIM-F06"
+      ],
+      "id": "hotel",
+      "name": "晴川亲子酒店·家庭房",
+      "type": "stay",
+      "location": "古城中心",
+      "priceMode": "per_room_night"
+    },
+    {
+      "destinationId": "sim-cloudwater",
+      "areaId": "east",
+      "durationMinutes": 90,
+      "openStart": "11:00",
+      "openEnd": "20:30",
+      "indoor": true,
+      "tags": [
+        "地方餐饮"
+      ],
+      "adultPrice": null,
+      "childPrice": null,
+      "seniorPrice": null,
+      "unitPrice": 60,
+      "capacityPerSlot": 50,
+      "capacityPerRoom": null,
+      "accessibleRoomsAvailable": null,
+      "allergenFree": {
+        "花生": "yes"
+      },
+      "crossContactControlled": {
+        "花生": "yes"
+      },
+      "dietSupport": {
+        "清淡": "yes"
+      },
+      "accessibility": {
+        "wheelchairRoute": "yes",
+        "stepFree": "yes",
+        "accessibleRoom": "unknown",
+        "accessibleVehicle": "unknown"
+      },
+      "pricingEvidenceIds": [
+        "SIM-F07"
+      ],
+      "openingEvidenceIds": [
+        "SIM-F07"
+      ],
+      "capacityEvidenceIds": [
+        "SIM-F07"
+      ],
+      "suitabilityEvidenceIds": [
+        "SIM-F07"
+      ],
+      "id": "localmeal",
+      "name": "水乡家宴",
+      "type": "meal",
+      "location": "古城东区",
+      "priceMode": "per_person"
+    },
+    {
+      "destinationId": "sim-cloudwater",
+      "areaId": "center",
+      "durationMinutes": 90,
+      "openStart": "11:00",
+      "openEnd": "21:00",
+      "indoor": true,
+      "tags": [
+        "亲子"
+      ],
+      "adultPrice": null,
+      "childPrice": null,
+      "seniorPrice": null,
+      "unitPrice": 75,
+      "capacityPerSlot": 80,
+      "capacityPerRoom": null,
+      "accessibleRoomsAvailable": null,
+      "allergenFree": {
+        "花生": "yes"
+      },
+      "crossContactControlled": {
+        "花生": "yes"
+      },
+      "dietSupport": {
+        "清淡": "yes"
+      },
+      "accessibility": {
+        "wheelchairRoute": "yes",
+        "stepFree": "yes",
+        "accessibleRoom": "unknown",
+        "accessibleVehicle": "unknown"
+      },
+      "pricingEvidenceIds": [
+        "SIM-F08"
+      ],
+      "openingEvidenceIds": [
+        "SIM-F08"
+      ],
+      "capacityEvidenceIds": [
+        "SIM-F08"
+      ],
+      "suitabilityEvidenceIds": [
+        "SIM-F08"
+      ],
+      "id": "familymeal",
+      "name": "亲子融合餐厅",
+      "type": "meal",
+      "location": "古城中心",
+      "priceMode": "per_person"
+    },
+    {
+      "destinationId": "sim-cloudwater",
+      "areaId": "west",
+      "durationMinutes": 90,
+      "openStart": "18:30",
+      "openEnd": "21:30",
+      "indoor": false,
+      "tags": [
+        "演艺"
+      ],
+      "adultPrice": 100,
+      "childPrice": 50,
+      "seniorPrice": 80,
+      "unitPrice": null,
+      "capacityPerSlot": 200,
+      "capacityPerRoom": null,
+      "accessibleRoomsAvailable": null,
+      "allergenFree": {},
+      "crossContactControlled": {},
+      "dietSupport": {},
+      "accessibility": {
+        "wheelchairRoute": "yes",
+        "stepFree": "yes",
+        "accessibleRoom": "unknown",
+        "accessibleVehicle": "unknown"
+      },
+      "pricingEvidenceIds": [
+        "SIM-F09"
+      ],
+      "openingEvidenceIds": [
+        "SIM-F09"
+      ],
+      "capacityEvidenceIds": [
+        "SIM-F09"
+      ],
+      "suitabilityEvidenceIds": [
+        "SIM-F09"
+      ],
+      "id": "nightshow",
+      "name": "河岸夜游演艺",
+      "type": "activity",
+      "location": "古城西区",
+      "priceMode": "ticket"
+    }
+  ],
+  "facts": [
+    {
+      "id": "SIM-F01",
+      "resourceId": "heritage",
+      "topic": "价格、开放、容量与服务",
+      "text": "云水非遗工坊 的虚构实训结构化资料；仅用于离线演示。",
+      "sourceLabel": "旅策协同虚构资源卡",
+      "sourceUrl": null,
+      "observedAt": "2026-06-01",
+      "validFrom": "2026-01-01",
+      "validTo": "2026-12-31",
+      "status": "confirmed",
+      "demo": true
+    },
+    {
+      "id": "SIM-F02",
+      "resourceId": "garden",
+      "topic": "价格、开放、容量与服务",
+      "text": "青岚湿地花园 的虚构实训结构化资料；仅用于离线演示。",
+      "sourceLabel": "旅策协同虚构资源卡",
+      "sourceUrl": null,
+      "observedAt": "2026-06-01",
+      "validFrom": "2026-01-01",
+      "validTo": "2026-12-31",
+      "status": "confirmed",
+      "demo": true
+    },
+    {
+      "id": "SIM-F03",
+      "resourceId": "museum",
+      "topic": "价格、开放、容量与服务",
+      "text": "城史互动馆 的虚构实训结构化资料；仅用于离线演示。",
+      "sourceLabel": "旅策协同虚构资源卡",
+      "sourceUrl": null,
+      "observedAt": "2026-06-01",
+      "validFrom": "2026-01-01",
+      "validTo": "2026-12-31",
+      "status": "confirmed",
+      "demo": true
+    },
+    {
+      "id": "SIM-F04",
+      "resourceId": "craft",
+      "topic": "价格、开放、容量与服务",
+      "text": "数字宋韵创作室 的虚构实训结构化资料；仅用于离线演示。",
+      "sourceLabel": "旅策协同虚构资源卡",
+      "sourceUrl": null,
+      "observedAt": "2026-06-01",
+      "validFrom": "2026-01-01",
+      "validTo": "2026-12-31",
+      "status": "confirmed",
+      "demo": true
+    },
+    {
+      "id": "SIM-F05",
+      "resourceId": "inn",
+      "topic": "价格、开放、容量与服务",
+      "text": "栖水文化客栈·双床房 的虚构实训结构化资料；仅用于离线演示。",
+      "sourceLabel": "旅策协同虚构资源卡",
+      "sourceUrl": null,
+      "observedAt": "2026-06-01",
+      "validFrom": "2026-01-01",
+      "validTo": "2026-12-31",
+      "status": "confirmed",
+      "demo": true
+    },
+    {
+      "id": "SIM-F06",
+      "resourceId": "hotel",
+      "topic": "价格、开放、容量与服务",
+      "text": "晴川亲子酒店·家庭房 的虚构实训结构化资料；仅用于离线演示。",
+      "sourceLabel": "旅策协同虚构资源卡",
+      "sourceUrl": null,
+      "observedAt": "2026-06-01",
+      "validFrom": "2026-01-01",
+      "validTo": "2026-12-31",
+      "status": "confirmed",
+      "demo": true
+    },
+    {
+      "id": "SIM-F07",
+      "resourceId": "localmeal",
+      "topic": "价格、开放、容量与服务",
+      "text": "水乡家宴 的虚构实训结构化资料；仅用于离线演示。",
+      "sourceLabel": "旅策协同虚构资源卡",
+      "sourceUrl": null,
+      "observedAt": "2026-06-01",
+      "validFrom": "2026-01-01",
+      "validTo": "2026-12-31",
+      "status": "confirmed",
+      "demo": true
+    },
+    {
+      "id": "SIM-F08",
+      "resourceId": "familymeal",
+      "topic": "价格、开放、容量与服务",
+      "text": "亲子融合餐厅 的虚构实训结构化资料；仅用于离线演示。",
+      "sourceLabel": "旅策协同虚构资源卡",
+      "sourceUrl": null,
+      "observedAt": "2026-06-01",
+      "validFrom": "2026-01-01",
+      "validTo": "2026-12-31",
+      "status": "confirmed",
+      "demo": true
+    },
+    {
+      "id": "SIM-F09",
+      "resourceId": "nightshow",
+      "topic": "演出安排",
+      "text": "河岸夜游演艺 的虚构实训结构化资料；仅用于离线演示。",
+      "sourceLabel": "旅策协同虚构资源卡",
+      "sourceUrl": null,
+      "observedAt": "2026-06-01",
+      "validFrom": "2026-01-01",
+      "validTo": "2026-12-31",
+      "status": "unknown",
+      "demo": true
+    }
+  ],
+  "transfers": [
+    {
+      "id": "SIM-T01",
+      "fromResourceId": "heritage",
+      "toResourceId": "localmeal",
+      "minutes": 20,
+      "walkingMinutes": 10,
+      "costMode": "included",
+      "amount": 0,
+      "serviceResourceId": null,
+      "evidenceIds": [
+        "SIM-F01"
+      ]
+    },
+    {
+      "id": "SIM-T02",
+      "fromResourceId": "localmeal",
+      "toResourceId": "garden",
+      "minutes": 30,
+      "walkingMinutes": 35,
+      "costMode": "included",
+      "amount": 0,
+      "serviceResourceId": null,
+      "evidenceIds": [
+        "SIM-F02"
+      ]
+    },
+    {
+      "id": "SIM-T03",
+      "fromResourceId": "garden",
+      "toResourceId": "inn",
+      "minutes": 25,
+      "walkingMinutes": 0,
+      "costMode": "included",
+      "amount": 0,
+      "serviceResourceId": null,
+      "evidenceIds": [
+        "SIM-F03"
+      ]
+    },
+    {
+      "id": "SIM-T04",
+      "fromResourceId": "inn",
+      "toResourceId": "museum",
+      "minutes": 30,
+      "walkingMinutes": 20,
+      "costMode": "included",
+      "amount": 0,
+      "serviceResourceId": null,
+      "evidenceIds": [
+        "SIM-F04"
+      ]
+    },
+    {
+      "id": "SIM-T05",
+      "fromResourceId": "museum",
+      "toResourceId": "localmeal",
+      "minutes": 20,
+      "walkingMinutes": 10,
+      "costMode": "included",
+      "amount": 0,
+      "serviceResourceId": null,
+      "evidenceIds": [
+        "SIM-F05"
+      ]
+    },
+    {
+      "id": "SIM-T06",
+      "fromResourceId": "museum",
+      "toResourceId": "familymeal",
+      "minutes": 15,
+      "walkingMinutes": 5,
+      "costMode": "included",
+      "amount": 0,
+      "serviceResourceId": null,
+      "evidenceIds": [
+        "SIM-F06"
+      ]
+    },
+    {
+      "id": "SIM-T07",
+      "fromResourceId": "familymeal",
+      "toResourceId": "craft",
+      "minutes": 15,
+      "walkingMinutes": 10,
+      "costMode": "included",
+      "amount": 0,
+      "serviceResourceId": null,
+      "evidenceIds": [
+        "SIM-F07"
+      ]
+    },
+    {
+      "id": "SIM-T08",
+      "fromResourceId": "craft",
+      "toResourceId": "hotel",
+      "minutes": 20,
+      "walkingMinutes": 0,
+      "costMode": "included",
+      "amount": 0,
+      "serviceResourceId": null,
+      "evidenceIds": [
+        "SIM-F08"
+      ]
+    },
+    {
+      "id": "SIM-T09",
+      "fromResourceId": "hotel",
+      "toResourceId": "heritage",
+      "minutes": 20,
+      "walkingMinutes": 10,
+      "costMode": "included",
+      "amount": 0,
+      "serviceResourceId": null,
+      "evidenceIds": [
+        "SIM-F09"
+      ]
+    },
+    {
+      "id": "SIM-T10",
+      "fromResourceId": "heritage",
+      "toResourceId": "familymeal",
+      "minutes": 15,
+      "walkingMinutes": 5,
+      "costMode": "included",
+      "amount": 0,
+      "serviceResourceId": null,
+      "evidenceIds": [
+        "SIM-F01"
+      ]
+    },
+    {
+      "id": "SIM-T11",
+      "fromResourceId": "heritage",
+      "toResourceId": "nightshow",
+      "minutes": 35,
+      "walkingMinutes": 10,
+      "costMode": "included",
+      "amount": 0,
+      "serviceResourceId": null,
+      "evidenceIds": [
+        "SIM-F02"
+      ]
+    },
+    {
+      "id": "SIM-T12",
+      "fromResourceId": "nightshow",
+      "toResourceId": "inn",
+      "minutes": 25,
+      "walkingMinutes": 5,
+      "costMode": "included",
+      "amount": 0,
+      "serviceResourceId": null,
+      "evidenceIds": [
+        "SIM-F03"
+      ]
+    }
+  ],
+  "plans": [
+    {
+      "id": "A",
+      "name": "文化深度版",
+      "origin": "manual",
+      "source": "SIM-P-A",
+      "items": [
+        {
+          "itemId": "A1",
+          "resourceId": "heritage",
+          "day": 1,
+          "start": "09:30",
+          "quantity": 1,
+          "mealSlot": null
+        },
+        {
+          "itemId": "A2",
+          "resourceId": "localmeal",
+          "day": 1,
+          "start": "12:00",
+          "quantity": 1,
+          "mealSlot": "lunch"
+        },
+        {
+          "itemId": "A3",
+          "resourceId": "garden",
+          "day": 1,
+          "start": "14:30",
+          "quantity": 1,
+          "mealSlot": null
+        },
+        {
+          "itemId": "A4",
+          "resourceId": "museum",
+          "day": 2,
+          "start": "09:30",
+          "quantity": 1,
+          "mealSlot": null
+        },
+        {
+          "itemId": "A5",
+          "resourceId": "localmeal",
+          "day": 2,
+          "start": "12:00",
+          "quantity": 1,
+          "mealSlot": "lunch"
+        }
+      ],
+      "stays": [
+        {
+          "resourceId": "inn",
+          "rooms": 2,
+          "checkInDay": 1,
+          "checkInTime": "17:30",
+          "checkoutDay": 2
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "name": "轻松亲子版",
+      "origin": "manual",
+      "source": "SIM-P-B",
+      "items": [
+        {
+          "itemId": "B1",
+          "resourceId": "museum",
+          "day": 1,
+          "start": "09:30",
+          "quantity": 1,
+          "mealSlot": null
+        },
+        {
+          "itemId": "B2",
+          "resourceId": "familymeal",
+          "day": 1,
+          "start": "12:00",
+          "quantity": 1,
+          "mealSlot": "lunch"
+        },
+        {
+          "itemId": "B3",
+          "resourceId": "craft",
+          "day": 1,
+          "start": "14:00",
+          "quantity": 1,
+          "mealSlot": null
+        },
+        {
+          "itemId": "B4",
+          "resourceId": "heritage",
+          "day": 2,
+          "start": "09:30",
+          "quantity": 1,
+          "mealSlot": null
+        },
+        {
+          "itemId": "B5",
+          "resourceId": "familymeal",
+          "day": 2,
+          "start": "12:00",
+          "quantity": 1,
+          "mealSlot": "lunch"
+        }
+      ],
+      "stays": [
+        {
+          "resourceId": "hotel",
+          "rooms": 1,
+          "checkInDay": 1,
+          "checkInTime": "17:30",
+          "checkoutDay": 2
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "name": "夜游尝鲜版",
+      "origin": "manual",
+      "source": "SIM-P-C",
+      "items": [
+        {
+          "itemId": "C1",
+          "resourceId": "heritage",
+          "day": 1,
+          "start": "10:00",
+          "quantity": 1,
+          "mealSlot": null
+        },
+        {
+          "itemId": "C2",
+          "resourceId": "localmeal",
+          "day": 1,
+          "start": "12:30",
+          "quantity": 1,
+          "mealSlot": "lunch"
+        },
+        {
+          "itemId": "C3",
+          "resourceId": "nightshow",
+          "day": 1,
+          "start": "19:00",
+          "quantity": 1,
+          "mealSlot": null
+        },
+        {
+          "itemId": "C4",
+          "resourceId": "museum",
+          "day": 2,
+          "start": "09:30",
+          "quantity": 1,
+          "mealSlot": null
+        },
+        {
+          "itemId": "C5",
+          "resourceId": "familymeal",
+          "day": 2,
+          "start": "12:00",
+          "quantity": 1,
+          "mealSlot": "lunch"
+        }
+      ],
+      "stays": [
+        {
+          "resourceId": "inn",
+          "rooms": 2,
+          "checkInDay": 1,
+          "checkInTime": "16:30",
+          "checkoutDay": 2
+        }
+      ]
+    }
+  ]
+}

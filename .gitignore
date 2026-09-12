@@ -1,0 +1,58 @@
+# Credentials and per-user configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+*.sqlite
+*.sqlite3
+*.db
+
+# Dependencies and caches
+node_modules/
+**/node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.cache/
+.npm/
+
+# Generated build, release, and validation output
+dist/
+release/
+logs/
+*.log
+*.tmp
+*.temp
+*.zip
+tourism/validation/*.json
+tourism/validation/*.png
+tourism/evaluation/*-results.json
+tourism/evaluation/*-results.md
+tourism/旅策协同-双击体验.html
+
+# Local development evidence and browser state
+.development/
+browser-profile*/
+uploads/
+vector-index*/
+
+# Authorized/private build inputs must never be published
+build-input/
+*.bin
+
+# Bundled desktop/runtime dependencies are local build material.
+# Only the three authored travel Skills are source-controlled.
+runtime/*
+!runtime/skills/
+!runtime/skills/**
+
+# Operating-system/editor noise
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/

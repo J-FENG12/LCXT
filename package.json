@@ -1,0 +1,28 @@
+{
+  "name": "travel-ai-collaboration",
+  "version": "4.2.0",
+  "private": true,
+  "description": "Travel.AI tourism planning and content skill system",
+  "scripts": {
+    "build": "npm run build:app",
+    "build:app": "node build-app.cjs",
+    "build:desktop": "node build-travel-brand.cjs --rasterize && node build-assets.cjs && node build-branded-runtime.cjs",
+    "start": "node launcher.cjs",
+    "test": "node --test test/*.test.cjs",
+    "test:source": "node --test test/contest-4.2.test.cjs test/agent-runner.test.cjs test/evaluation.test.cjs",
+    "test:browser": "node test/tourism-browser.cjs",
+    "test:evaluation": "node tourism/evaluation/run-offline-evaluation.cjs",
+    "test:live-dry-run": "node tourism/evaluation/run-live-evaluation.cjs",
+    "test:app": "npm run build:app && npm run test:source && npm run test:evaluation",
+    "start:app": "node tourism/agent-server.cjs",
+    "start:tourism": "node tourism/agent-server.cjs",
+    "check:environment": "node tools/check-environment.cjs",
+    "audit:anonymous": "node tools/anonymity-audit.cjs",
+    "package:contest": "powershell -NoProfile -ExecutionPolicy Bypass -File ./pack-competition.ps1"
+  },
+  "devDependencies": {
+    "rcedit": "^5.0.2",
+    "resedit": "^3.1.0",
+    "sharp": "^0.35.4"
+  }
+}

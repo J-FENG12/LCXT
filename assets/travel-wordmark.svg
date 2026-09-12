@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 160">
+  <rect width="720" height="160" rx="24" fill="none"/>
+  <g transform="translate(8 8) scale(.56)"><use href="travel-symbol.svg#none"/><path d="M46 172c27-12 42-31 52-57 10-25 28-44 59-53 18-5 37-3 54 5-19 2-33 11-42 25-11 17-13 38-25 55-18 25-48 38-88 39" fill="none" stroke="#176F82" stroke-width="19" stroke-linecap="round"/><path d="M65 184c24-1 45 4 62 15 16 11 36 15 60 10" fill="none" stroke="#E4A84B" stroke-width="13" stroke-linecap="round"/><circle cx="187" cy="79" r="15" fill="#E4A84B"/></g>
+  <text x="170" y="84" font-family="Microsoft YaHei,Segoe UI,sans-serif" font-size="54" font-weight="700" fill="#164C5A">旅策协同</text>
+  <text x="173" y="126" font-family="Segoe UI,sans-serif" font-size="23" letter-spacing="4" fill="#4C7D7E">TRAVEL.AI</text>
+</svg>

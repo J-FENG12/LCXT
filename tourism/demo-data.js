@@ -1,0 +1,31 @@
+(function(root){
+  "use strict";
+  const destinationId="sim-cloudwater";
+  const baseAccess={wheelchairRoute:"yes",stepFree:"yes",accessibleRoom:"unknown",accessibleVehicle:"unknown"};
+  function fact(id,resourceId,topic,text,status="confirmed"){return{id,resourceId,topic,text,sourceLabel:"旅策协同虚构资源卡",sourceUrl:null,observedAt:"2026-06-01",validFrom:"2026-01-01",validTo:"2026-12-31",status,demo:true};}
+  function resource(data,index){const evidence=`SIM-F${String(index).padStart(2,"0")}`;return{destinationId,areaId:data.areaId||"center",durationMinutes:60,openStart:"08:00",openEnd:"22:00",indoor:true,tags:[],adultPrice:null,childPrice:null,seniorPrice:null,unitPrice:null,capacityPerSlot:null,capacityPerRoom:null,accessibleRoomsAvailable:null,allergenFree:{},crossContactControlled:{},dietSupport:{},accessibility:{...baseAccess},pricingEvidenceIds:[evidence],openingEvidenceIds:[evidence],capacityEvidenceIds:[evidence],suitabilityEvidenceIds:[evidence],...data};}
+  function scenario(){
+    const resources=[
+      resource({id:"heritage",name:"云水非遗工坊",type:"activity",areaId:"east",location:"古城东区",durationMinutes:120,openStart:"09:00",openEnd:"17:00",tags:["非遗","亲子"],priceMode:"ticket",adultPrice:120,childPrice:60,seniorPrice:60,capacityPerSlot:30},1),
+      resource({id:"garden",name:"青岚湿地花园",type:"activity",areaId:"south",location:"古城南区",durationMinutes:120,openStart:"08:00",openEnd:"18:00",indoor:false,tags:["自然","摄影"],priceMode:"ticket",adultPrice:80,childPrice:40,seniorPrice:40,capacityPerSlot:100},2),
+      resource({id:"museum",name:"城史互动馆",type:"activity",location:"古城中心",durationMinutes:120,openStart:"09:00",openEnd:"17:00",tags:["文化","亲子"],priceMode:"ticket",adultPrice:60,childPrice:30,seniorPrice:0,capacityPerSlot:60},3),
+      resource({id:"craft",name:"数字宋韵创作室",type:"activity",location:"古城中心",durationMinutes:150,openStart:"10:00",openEnd:"20:00",tags:["非遗","数字媒体","亲子"],priceMode:"per_person",unitPrice:130,capacityPerSlot:20},4),
+      resource({id:"inn",name:"栖水文化客栈·双床房",type:"stay",areaId:"east",location:"古城东区",durationMinutes:30,openStart:"14:00",openEnd:"23:00",tags:["文化"],priceMode:"per_room_night",unitPrice:450,capacityPerRoom:2,accessibleRoomsAvailable:0,accessibility:{...baseAccess,accessibleRoom:"no"}},5),
+      resource({id:"hotel",name:"晴川亲子酒店·家庭房",type:"stay",location:"古城中心",durationMinutes:30,openStart:"14:00",openEnd:"23:00",tags:["亲子"],priceMode:"per_room_night",unitPrice:720,capacityPerRoom:4,accessibleRoomsAvailable:2,accessibility:{...baseAccess,accessibleRoom:"yes"}},6),
+      resource({id:"localmeal",name:"水乡家宴",type:"meal",areaId:"east",location:"古城东区",durationMinutes:90,openStart:"11:00",openEnd:"20:30",tags:["地方餐饮"],priceMode:"per_person",unitPrice:60,capacityPerSlot:50,allergenFree:{花生:"yes"},crossContactControlled:{花生:"yes"},dietSupport:{清淡:"yes"}},7),
+      resource({id:"familymeal",name:"亲子融合餐厅",type:"meal",location:"古城中心",durationMinutes:90,openStart:"11:00",openEnd:"21:00",tags:["亲子"],priceMode:"per_person",unitPrice:75,capacityPerSlot:80,allergenFree:{花生:"yes"},crossContactControlled:{花生:"yes"},dietSupport:{清淡:"yes"}},8),
+      resource({id:"nightshow",name:"河岸夜游演艺",type:"activity",areaId:"west",location:"古城西区",durationMinutes:90,openStart:"18:30",openEnd:"21:30",indoor:false,tags:["演艺"],priceMode:"ticket",adultPrice:100,childPrice:50,seniorPrice:80,capacityPerSlot:200},9)
+    ];
+    const facts=resources.map((r,index)=>fact(`SIM-F${String(index+1).padStart(2,"0")}`,r.id,index===8?"演出安排":"价格、开放、容量与服务",`${r.name} 的虚构实训结构化资料；仅用于离线演示。`,index===8?"unknown":"confirmed"));
+    const transferPairs=[["heritage","localmeal",20,10],["localmeal","garden",30,35],["garden","inn",25,0],["inn","museum",30,20],["museum","localmeal",20,10],["museum","familymeal",15,5],["familymeal","craft",15,10],["craft","hotel",20,0],["hotel","heritage",20,10],["heritage","familymeal",15,5],["heritage","nightshow",35,10],["nightshow","inn",25,5]];
+    const transfers=transferPairs.map((x,i)=>({id:`SIM-T${String(i+1).padStart(2,"0")}`,fromResourceId:x[0],toResourceId:x[1],minutes:x[2],walkingMinutes:x[3],costMode:"included",amount:0,serviceResourceId:null,evidenceIds:[`SIM-F${String((i%resources.length)+1).padStart(2,"0")}`]}));
+    const item=(itemId,resourceId,day,start,mealSlot=null,quantity=1)=>({itemId,resourceId,day,start,quantity,mealSlot});
+    const plans=[
+      {id:"A",name:"文化深度版",origin:"manual",source:"SIM-P-A",items:[item("A1","heritage",1,"09:30"),item("A2","localmeal",1,"12:00","lunch"),item("A3","garden",1,"14:30"),item("A4","museum",2,"09:30"),item("A5","localmeal",2,"12:00","lunch")],stays:[{resourceId:"inn",rooms:2,checkInDay:1,checkInTime:"17:30",checkoutDay:2}]},
+      {id:"B",name:"轻松亲子版",origin:"manual",source:"SIM-P-B",items:[item("B1","museum",1,"09:30"),item("B2","familymeal",1,"12:00","lunch"),item("B3","craft",1,"14:00"),item("B4","heritage",2,"09:30"),item("B5","familymeal",2,"12:00","lunch")],stays:[{resourceId:"hotel",rooms:1,checkInDay:1,checkInTime:"17:30",checkoutDay:2}]},
+      {id:"C",name:"夜游尝鲜版",origin:"manual",source:"SIM-P-C",items:[item("C1","heritage",1,"10:00"),item("C2","localmeal",1,"12:30","lunch"),item("C3","nightshow",1,"19:00"),item("C4","museum",2,"09:30"),item("C5","familymeal",2,"12:00","lunch")],stays:[{resourceId:"inn",rooms:2,checkInDay:1,checkInTime:"16:30",checkoutDay:2}]}
+    ];
+    return{schemaVersion:2,taskId:"3d32e670-dca3-4b93-8cbe-9772472f6610",revision:0,demo:true,evaluationDate:"2026-06-15",request:{destinationId,destination:"云水古城（虚构实训目的地）",startDate:"2026-07-18",days:2,adults:2,children:1,seniors:1,budget:3000,maxWalkingMinutes:70,weather:"clear",avoidOutdoorInRain:true,interests:["非遗","亲子"],dietary:"清淡且不含花生",accessibility:"长者不适合长时间步行",dayWindows:[{day:1,start:"09:00",end:"21:30",minActivities:2,requiredMeals:["lunch"]},{day:2,start:"09:00",end:"17:00",minActivities:1,requiredMeals:["lunch"]}],requiredNights:[1],selfArrangedNights:[],dietaryRequirements:{excludedAllergens:["花生"],avoidCrossContact:true,dietTypes:["清淡"]},accessibilityRequirements:{wheelchairRoute:false,stepFree:false,accessibleRoom:false,accessibleVehicle:false},unresolvedRequirements:[]},resources,facts,transfers,plans};
+  }
+  const api={scenario};if(typeof module==="object"&&module.exports)module.exports=api;else{root.TravelDemoData=api;root.TravelDemo=api;}
+})(globalThis);
