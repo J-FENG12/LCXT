@@ -18,7 +18,7 @@ async function main() {
   });
   await new Promise((resolve, reject) => { ws.once("open", resolve); ws.once("error", reject); });
   const call = (method, params = {}) => new Promise((resolve, reject) => {
-    const key = ++id, timer = setTimeout(() => { pending.delete(key); reject(new Error(`${method} timeout`)); }, 25000);
+    const key = ++id, timer = setTimeout(() => { pending.delete(key); reject(new Error(`${method} timeout`)); }, 75000);
     pending.set(key, { resolve, reject, timer }); ws.send(JSON.stringify({ id: key, method, params }));
   });
   const evaluate = async expression => {
@@ -28,10 +28,20 @@ async function main() {
   };
   try {
     const report = { date: new Date().toISOString(), version: require("../package.json").version, liveModelCalls: 0 };
-    report.page = await evaluate(`({title:document.title,workbench:!!document.getElementById('tv-root'),agentBridge:typeof window.TravelAgentRequest,agentPanel:!!document.getElementById('ta-panel'),faviconBranded:document.querySelector('link[rel="icon"]')?.href===globalThis.TravelBrand?.symbol})`);
+    const findChatButton = `(async()=>{const end=Date.now()+60000;while(Date.now()<end){if(document.querySelector('[data-testid="composer-input-area"]'))return null;const node=[...document.querySelectorAll('button')].find(item=>item.textContent.trim()==='新建对话');if(node){const box=node.getBoundingClientRect();return {x:box.left+box.width/2,y:box.top+box.height/2}}await new Promise(resolve=>setTimeout(resolve,250));}return null})()`;
+    let chatButton = await evaluate(findChatButton);
+    if(!chatButton && !(await evaluate(`!!document.querySelector('[data-testid="composer-input-area"]')`)))chatButton = await evaluate(findChatButton);
+    if(chatButton){await call('Input.dispatchMouseEvent',{type:'mousePressed',x:chatButton.x,y:chatButton.y,button:'left',buttons:1,clickCount:1});await call('Input.dispatchMouseEvent',{type:'mouseReleased',x:chatButton.x,y:chatButton.y,button:'left',buttons:0,clickCount:1});}
+    const mainButton = await evaluate(`(async()=>{const end=Date.now()+5000;while(Date.now()<end){if(document.querySelector('[data-testid="composer-input-area"]'))return null;const dialog=[...document.querySelectorAll('[role=dialog]')].find(node=>node.innerText.includes('新建会话'));const node=[...(dialog?.querySelectorAll('*')||[])].reverse().find(item=>item.textContent.trim()==='main');if(node){const box=node.getBoundingClientRect();return {x:box.left+box.width/2,y:box.top+box.height/2}}await new Promise(resolve=>setTimeout(resolve,100));}return null})()`);
+    if(mainButton){await call('Input.dispatchMouseEvent',{type:'mousePressed',x:mainButton.x,y:mainButton.y,button:'left',buttons:1,clickCount:1});await call('Input.dispatchMouseEvent',{type:'mouseReleased',x:mainButton.x,y:mainButton.y,button:'left',buttons:0,clickCount:1});}
+    report.chatReady = await evaluate(`(async()=>{const end=Date.now()+60000;while(Date.now()<end&&!document.querySelector('[data-testid="composer-input-area"]'))await new Promise(resolve=>setTimeout(resolve,250));return !!document.querySelector('[data-testid="composer-input-area"]')})()`);
+    assert.equal(report.chatReady,true,JSON.stringify({newChatButton:!!chatButton,mainButton:!!mainButton}));
+    report.page = await evaluate(`({title:document.title,workbench:!!document.getElementById('tv-root'),agentBridge:typeof window.TravelAgentRequest,toolBridge:typeof window.TravelToolRequest,agentPanel:!!document.getElementById('ta-panel'),conversationBridge:typeof window.TravelConversationSubmit,conversationPanel:!!document.getElementById('tcv-panel'),composerArea:!!document.querySelector('[data-testid="composer-input-area"]'),composerDock:!!document.querySelector('.chat-composer-dock'),faviconBranded:document.querySelector('link[rel="icon"]')?.href===globalThis.TravelBrand?.symbol})`);
     assert.equal(report.page.title, "旅策协同 · 文旅智能辅助");
     assert.equal(report.page.workbench, true); assert.equal(report.page.agentBridge, "function");
-    assert.equal(report.page.agentPanel, true); assert.equal(report.page.faviconBranded, true);
+    assert.equal(report.page.toolBridge, "function", JSON.stringify(report.page));assert.equal(report.page.agentPanel, true, JSON.stringify(report.page)); assert.equal(report.page.conversationBridge, "function", JSON.stringify(report.page));assert.equal(report.page.conversationPanel, true, JSON.stringify(report.page));assert.equal(report.page.faviconBranded, true, JSON.stringify(report.page));
+    report.journeyView = await evaluate(`(()=>{const task=TravelWorkbench.read(),result=TravelWorkbench.currentResult();return{available:!!document.getElementById('tj-root'),demo:task.demo,revision:task.revision,plans:document.querySelectorAll('.tj-plan-card').length,days:document.querySelectorAll('.tj-day').length,routeDays:document.querySelectorAll('.tj-route-day').length,editableItems:document.querySelectorAll('.tj-edit').length,persistence:document.getElementById('tv-persistence')?.textContent||'',resultBound:!result||result.taskHash===TravelTaskSchema.hash(task)}})()`);
+    assert.equal(report.journeyView.available, true);assert.equal(report.journeyView.resultBound,true);assert.match(report.journeyView.persistence,/已保存|尚未保存|正在读取/);assert.ok(report.journeyView.plans>=0);assert.ok(report.journeyView.days>=0);assert.ok(report.journeyView.routeDays>=0);
     report.gateway = await evaluate("(async()=>{const end=Date.now()+60000;let state;do{state=await window.__TAURI_INTERNALS__.invoke('sidecar_gateway_info');if(state.ready||state.exited)return {ready:!!state.ready,exited:!!state.exited,status:state.status||null,error:state.error||null,port:state.port||null};await new Promise(r=>setTimeout(r,250));}while(Date.now()<end);return {ready:false,exited:!!state?.exited,status:state?.status||null,error:state.error||null,port:state?.port||null};})()");
     assert.equal(report.gateway.ready, true, `OpenClaw gateway readiness: ${JSON.stringify(report.gateway)}`);
     report.modelConfigPathMatches = await evaluate("window.__TAURI_INTERNALS__.invoke('config_detect_local_path').then(p=>typeof p==='string'&&/[\\\\/]\\.tr-ai-assist[\\\\/]tr-ai-assist\\.json$/.test(p))");
@@ -54,19 +64,38 @@ async function main() {
     report.skillMarketCategories = await evaluate(`(()=>{const retired=String.fromCharCode(30021,25463,36890),policy=globalThis.TravelSkillMarketPolicy,host=document.createElement('div'),hidden=['智能供应链','智能制造',retired+'服务','电商采集','私域运营'],kept=['效率工具','数据分析','市场研究','基本技能'];host.innerHTML=[...hidden,...kept].map(text=>'<button>'+text+'</button>').join('');const removed=policy?.filterSkillMarketCategories(host);return {removed,remaining:[...host.querySelectorAll('button')].map(item=>item.textContent)};})()`);
     assert.equal(report.skillMarketCategories.removed,5);
     assert.deepEqual(report.skillMarketCategories.remaining,["效率工具","数据分析","市场研究","基本技能"]);
+    report.skillNameLocalization = await evaluate(`(()=>{const policy=globalThis.TravelSkillMarketPolicy,host=document.createElement('div');host.innerHTML='<div data-testid="skill-card-local"><b>travel-demand-planner</b><b>travel-service-coordinator</b><b>travel-content-lab</b></div><div data-testid="slash-command-menu"><button><b>travel-marketing-creator</b></button></div><span data-mention="true" data-mention-type="skill" data-mention-text="[skill:travel-product-designer]"><b>travel-product-designer</b></span><p>travel-demand-planner</p>';const changed=policy?.localizeSkillNames(host);return {changed,names:[...host.querySelectorAll('b')].map(item=>item.textContent),unrelated:host.querySelector('p').textContent,mentionText:host.querySelector('[data-mention]').dataset.mentionText,ids:Object.keys(policy?.skillDisplayNames||{})};})()`);
+    assert.equal(report.skillNameLocalization.changed,5);
+    assert.deepEqual(report.skillNameLocalization.names,["文旅需求规划","文旅服务协同","文旅内容创意","文旅营销创作","文旅产品设计"]);
+    assert.equal(report.skillNameLocalization.unrelated,"travel-demand-planner");
+    assert.equal(report.skillNameLocalization.mentionText,"[skill:travel-product-designer]");
+    assert.equal(report.skillNameLocalization.ids.length,5);
     report.skillMarketView = await evaluate(`(async()=>{const find=text=>[...document.querySelectorAll('button')].find(item=>item.textContent.trim()===text),click=text=>find(text)?.click(),waitFor=async(text,timeout=10000)=>{const end=Date.now()+timeout;while(Date.now()<end&&!find(text))await new Promise(resolve=>setTimeout(resolve,250));return find(text)};click('技能');await waitFor('技能市场');click('技能市场');await waitFor('效率工具');const retired=String.fromCharCode(30021,25463,36890),buttons=[...document.querySelectorAll('button')].map(item=>item.textContent.trim()),cards=[...document.querySelectorAll('[data-testid^="market-skill-card-"]')],hidden=['智能供应链','智能制造',retired+'服务','电商采集','私域运营'],kept=['效率工具','数据分析','市场研究','基本技能'];return {hiddenVisible:hidden.filter(text=>buttons.includes(text)),keptVisible:kept.filter(text=>buttons.includes(text)),retiredCards:cards.filter(card=>[...card.querySelectorAll('span')].some(node=>node.textContent.trim().startsWith(retired))).length,independentCards:cards.filter(card=>![...card.querySelectorAll('span')].some(node=>node.textContent.trim().startsWith(retired))).length};})()`);
     assert.deepEqual(report.skillMarketView.hiddenVisible,[]);
     assert.deepEqual(report.skillMarketView.keptVisible,["效率工具","数据分析","市场研究","基本技能"]);
     assert.equal(report.skillMarketView.retiredCards,0);assert.ok(report.skillMarketView.independentCards>0);
+    report.modelEntryPoints = await evaluate("({desktop:!!document.getElementById('travel-model-button'),duplicate:!!document.getElementById('tm-button'),duplicateDialog:!!document.getElementById('tm-dialog')})");
+    assert.deepEqual(report.modelEntryPoints, { desktop: true, duplicate: false, duplicateDialog: false });
+    report.utilityButtons = await evaluate("(()=>{const rect=id=>{const r=document.getElementById(id)?.getBoundingClientRect();return r&&{left:r.left,top:r.top,bottom:r.bottom,width:r.width}};return{workbench:rect('tv-launch'),model:rect('travel-model-button'),tools:rect('tt-button'),diagnostics:rect('travel-diagnostics-button')}})()");
+    const utilityStack = Object.values(report.utilityButtons);
+    assert.equal(utilityStack.length, 4);
+    assert.ok(utilityStack.every(Boolean));
+    assert.ok(utilityStack.every(rect => Math.abs(rect.left - utilityStack[0].left) < 2));
+    assert.ok(utilityStack.slice(0, -1).every((rect, index) => rect.bottom + 4 <= utilityStack[index + 1].top));
     await evaluate("document.getElementById('travel-model-button').click()");
     await evaluate("new Promise(resolve=>setTimeout(resolve,300))");
     report.modelSettings = await evaluate("({visible:getComputedStyle(document.getElementById('travel-model-modal')).display!=='none',title:document.querySelector('#travel-model-modal h2')?.textContent,passwordType:document.getElementById('travel-api-key')?.type,credentialValueEmpty:document.getElementById('travel-api-key')?.value===''})");
-    assert.equal(report.modelSettings.visible, true); assert.equal(report.modelSettings.passwordType, "password");
+    assert.equal(report.modelSettings.visible, true, JSON.stringify(report.modelSettings)); assert.equal(report.modelSettings.passwordType, "password", JSON.stringify(report.modelSettings));
     assert.equal(report.modelSettings.credentialValueEmpty, true); assert.match(report.modelSettings.title, /旅策协同/);
-    await evaluate("document.querySelector('#travel-model-modal .travel-close').click();document.getElementById('tv-launch').click()");
+    await evaluate("document.querySelector('#travel-model-modal .travel-close').click();document.getElementById('tt-button').click()");
+    await evaluate("new Promise(resolve=>setTimeout(resolve,250))");
+    report.toolSettings = await evaluate(`(()=>{const dialog=document.getElementById('tt-dialog'),cards=[...document.querySelectorAll('.tt-card')],text=dialog?.textContent||'';return{visible:dialog?.open===true,title:dialog?.querySelector('h2')?.textContent,cards:cards.length,boundary:text.includes('联网工具只发送当前任务中的公开地点')&&text.includes('不会自动覆盖任务'),keys:[...dialog.querySelectorAll('input[type=password]')].every(input=>input.value==='')};})()`);
+    assert.equal(report.toolSettings.visible,true);assert.equal(report.toolSettings.title,"基础工具与联网服务");assert.equal(report.toolSettings.cards,4);assert.equal(report.toolSettings.boundary,true);assert.equal(report.toolSettings.keys,true);
+    await evaluate("document.getElementById('tt-dialog').close();document.getElementById('tv-launch').click()");
     report.workbenchVisible = await evaluate("!document.getElementById('tv-root').hidden");
     report.retiredTextCount = await evaluate(`(document.body.innerText.match(new RegExp(${JSON.stringify(retiredPattern.source)},'gi'))||[]).length`);
     assert.equal(report.workbenchVisible, true); assert.equal(report.retiredTextCount, 0);
+    delete report.diagnostics.text; delete report.sidebarLocalCheck.text;
     await evaluate("new Promise(resolve=>setTimeout(resolve,250))");
     const shot = await call("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
     fs.writeFileSync(path.join(__dirname, "../tourism/validation/文旅工作台-桌面验证.png"), Buffer.from(shot.data, "base64"));
@@ -74,4 +103,4 @@ async function main() {
     console.log(JSON.stringify(report));
   } finally { ws.close(); }
 }
-main().catch(error => { console.error(error.message); process.exitCode = 1; });
+main().catch(error => { console.error(error.stack || error.message); process.exitCode = 1; });

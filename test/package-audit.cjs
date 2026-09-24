@@ -5,7 +5,7 @@ const { modelConfigPaths } = require("../platform/model-config-paths.cjs");
 const { audit } = require("../tools/brand-audit.cjs");
 function main() {
   const files = releaseFiles();
-  for (const rel of ["runtime/旅策协同.exe", "dist/index-v4.js", "旅策协同文旅Agent.vbs", "旅策协同桌面版.vbs", "tourism/旅策协同-双击体验.html",
+  for (const rel of ["runtime/旅策协同.exe", "dist/index-v4.js", "启动旅策协同.vbs", "tourism/旅策协同-双击体验.html",
     ...["travel-demand-planner", "travel-service-coordinator", "travel-content-lab"].map(name => `runtime/skills/${name}/SKILL.md`)]) {
     if (!files.includes(rel)) throw new Error(`待打包文件缺失：${rel}`);
   }
@@ -37,7 +37,7 @@ function main() {
     personalFilesExcluded: true, historicalContentExcluded: true, unexpectedBrandFiles: 0,
     brandExceptions: brandReport.exceptions.map(x => ({ file: x.file, reason: x.exception })),
     scope: "Exact configured key byte scan, brand scan and explicit path exclusions; not a universal DLP guarantee.",
-    sourceHashes: Object.fromEntries(["launcher.cjs", "native-brand.ps1", "platform/model-config-paths.cjs", "tourism/agent-runner.cjs", "tourism/travel-core.js", "runtime/skills/travel-demand-planner/SKILL.md", "dist/index-v4.js"].map(rel => [rel, digest(rel)])) };
+    sourceHashes: Object.fromEntries(["launcher.cjs", "build-native-runtime-host.cjs", "tools/native-runtime-host.cs", "platform/model-config-paths.cjs", "tourism/agent-runner.cjs", "tourism/travel-core.js", "runtime/skills/travel-demand-planner/SKILL.md", "dist/index-v4.js"].map(rel => [rel, digest(rel)])) };
   fs.writeFileSync(path.join(root, reportRel), JSON.stringify(report, null, 2));
   if (!files.includes(reportRel)) files.push(reportRel);
   fs.mkdirSync(path.join(root, "release"), { recursive: true });

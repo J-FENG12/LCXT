@@ -286,7 +286,7 @@
     if (byId("travel-model-styles")) return;
     const style = element("style", { id: "travel-model-styles" });
     style.textContent = `
-      #travel-model-button{position:fixed;left:18px;bottom:64px;z-index:9997;border:1px solid rgba(100,116,139,.24);border-radius:10px;padding:8px 14px;background:rgba(255,255,255,.92);color:#1f2937;box-shadow:0 8px 24px rgba(15,23,42,.08);font:500 13px system-ui;cursor:pointer;backdrop-filter:blur(14px)}
+      #travel-model-button{position:fixed;left:18px;bottom:122px;z-index:9997;border:1px solid rgba(100,116,139,.24);border-radius:10px;padding:8px 14px;background:rgba(255,255,255,.92);color:#1f2937;box-shadow:0 8px 24px rgba(15,23,42,.08);font:500 13px system-ui;cursor:pointer;backdrop-filter:blur(14px)}
       .dark #travel-model-button{background:rgba(30,30,34,.94);color:#f3f4f6}
       #travel-model-modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(15,23,42,.38);backdrop-filter:blur(5px);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
       .travel-model-card{width:min(760px,calc(100vw - 48px));max-height:calc(100vh - 48px);overflow:auto;border-radius:20px;padding:26px;background:#fff;color:#1f2937;box-shadow:0 28px 90px rgba(15,23,42,.25)}

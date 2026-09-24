@@ -48,6 +48,22 @@ function replaceAllFixedBytes(bytes,sourceBytes,targetText,minimum,skip=()=>fals
   if(count<minimum)throw new Error(`原生品牌字符串替换数量异常：${count} < ${minimum}`);
   return count;
 }
+function stripAuthenticode(file){
+  let bytes=fs.readFileSync(file);
+  const peOffset=bytes.readUInt32LE(0x3c);
+  if(bytes.toString("ascii",peOffset,peOffset+4)!=="PE\0\0")throw new Error("品牌运行文件不是有效 PE 文件。");
+  const optionalOffset=peOffset+24,magic=bytes.readUInt16LE(optionalOffset);
+  const dataDirectoryOffset=optionalOffset+(magic===0x20b?112:magic===0x10b?96:0);
+  if(!dataDirectoryOffset)throw new Error("品牌运行文件的 PE 可选头不受支持。");
+  const securityOffset=dataDirectoryOffset+8*4,certificateOffset=bytes.readUInt32LE(securityOffset),certificateSize=bytes.readUInt32LE(securityOffset+4);
+  if(!certificateOffset||!certificateSize)return false;
+  bytes.writeUInt32LE(0,securityOffset);bytes.writeUInt32LE(0,securityOffset+4);
+  if(certificateOffset>=bytes.length||certificateSize>bytes.length-certificateOffset){fs.writeFileSync(file,bytes);return true;}
+  if(certificateOffset+certificateSize===bytes.length)bytes=bytes.subarray(0,certificateOffset);
+  else bytes.fill(0,certificateOffset,certificateOffset+certificateSize);
+  fs.writeFileSync(file,bytes);
+  return true;
+}
 async function replaceEmbeddedBrandIcons(file){
   const bytes=fs.readFileSync(file),found=findPngs(bytes);
   for(const expected of embeddedIcons){
@@ -69,8 +85,9 @@ async function replaceEmbeddedBrandIcons(file){
   // including the equal-length Tauri application id. Desktop cold-start tests
   // verify that this byte-compatible identifier remains bootable.
   const nativeIdCount=replaceAllFixedBytes(bytes,Buffer.from([99,99,108,97,119]),"tr-ai",26);
+  const legacyProviderTypeCount=replaceAllFixedBytes(bytes,Buffer.from([67,104,97,110,106,101,116]),"Tourism",11);
   const vendorCount=replaceAllFixedBytes(bytes,Buffer.from([99,104,97,110,106,101,116]),"tourism",83);
-  if(nativeIdCount!==26||vendorCount!==83)throw new Error("Unexpected native product-identifier count.");
+  if(nativeIdCount!==26||legacyProviderTypeCount!==11||vendorCount!==83)throw new Error("Unexpected native product-identifier count.");
   fs.writeFileSync(file,bytes);
 }
 async function main(){
@@ -92,6 +109,11 @@ async function main(){
       LegalCopyright:"Copyright © 2026 旅策协同"
     }
   });
+  if(!stripAuthenticode(output))throw new Error("授权运行输入未包含预期的旧签名证书表，停止生成派生运行文件。");
+  const brandedBytes=fs.readFileSync(output);
+  for(const retired of [Buffer.from([67,67,108,97,119]),Buffer.from([99,99,108,97,119]),Buffer.from([67,104,97,110,106,101,116]),Buffer.from([99,104,97,110,106,101,116]),Buffer.from(String.fromCharCode(30021,25463,36890))]){
+    if(brandedBytes.includes(retired))throw new Error("派生运行文件仍包含旧产品或旧开发者标识。");
+  }
   if(sha(source)!==sourceSHA256)throw new Error("已授权运行基线发生变化，停止构建。");
   console.log(`Built branded runtime: ${output} (${sha(output)})`);
 }

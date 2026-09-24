@@ -36,6 +36,7 @@ tourism/旅策协同-双击体验.html
 
 # Local development evidence and browser state
 .development/
+.codex-finalizer/
 browser-profile*/
 uploads/
 vector-index*/

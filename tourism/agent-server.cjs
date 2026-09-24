@@ -1,4 +1,5 @@
 "use strict";
+if (process.argv.includes("--submission")) process.env.TRAVEL_SUBMISSION_MODE = "1";
 const http = require("node:http");
 const fs = require("node:fs");
 const path = require("node:path");
@@ -6,14 +7,16 @@ const crypto = require("node:crypto");
 const { spawn } = require("node:child_process");
 const { TravelAgent } = require("./agent-runner.cjs");
 const ModelConfig = require("./model-config.cjs");
+const { TravelToolService } = require("./tool-broker.cjs");
 
 async function startServer(options = {}) {
-  const agent = options.agent || new TravelAgent();
+  const agent = options.agent || new TravelAgent({ home: options.home, enablePersistence: true });
+  const tools = options.tools || new TravelToolService({ home: options.home });
   const token = crypto.randomBytes(32).toString("hex");
   const home = options.home;
   let origin;
   const localCall = `async function(endpoint,payload){const r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json','X-Travel-Token':${JSON.stringify(token)}},body:JSON.stringify(payload||{})});const data=await r.json();if(!r.ok)throw new Error(data.error||'本机服务请求失败');return data;}`;
-  const bridge = `const TravelLocalCall=${localCall};globalThis.TravelAgentRequest=p=>TravelLocalCall('/api/agent',p);globalThis.TravelModelRequest=p=>TravelLocalCall('/api/model',p);globalThis.TravelAgentShutdown=async function(){await TravelLocalCall('/api/shutdown',{});document.body.textContent='旅策协同已退出，可以关闭此标签页。';};`;
+  const bridge = `const TravelLocalCall=${localCall};globalThis.TravelAgentRequest=p=>TravelLocalCall('/api/agent',p);globalThis.TravelModelRequest=p=>TravelLocalCall('/api/model',p);globalThis.TravelToolRequest=p=>TravelLocalCall('/api/tools',p);globalThis.TravelAgentShutdown=async function(){await TravelLocalCall('/api/shutdown',{});document.body.textContent='旅策协同已退出，可以关闭此标签页。';};`;
   const server = http.createServer(async (req, res) => {
     res.setHeader("Cache-Control", "no-store");
     res.setHeader("X-Content-Type-Options", "nosniff");
@@ -25,7 +28,7 @@ async function startServer(options = {}) {
       res.writeHead(200, { "Content-Type": "text/html;charset=utf-8", "Content-Security-Policy": "frame-ancestors 'none'" });
       return res.end(html);
     }
-    if (req.method !== "POST" || !["/api/agent", "/api/model", "/api/shutdown"].includes(req.url)) return send(404, { error: "不存在的接口" });
+    if (req.method !== "POST" || !["/api/agent", "/api/model", "/api/tools", "/api/shutdown"].includes(req.url)) return send(404, { error: "不存在的接口" });
     if (req.headers["x-travel-token"] !== token || (req.headers.origin && req.headers.origin !== origin) || (req.headers["sec-fetch-site"] && !["same-origin", "none"].includes(req.headers["sec-fetch-site"]))) return send(403, { error: "请求来源不允许" });
     if (req.url === "/api/shutdown") { send(200, { closed: true }); return setImmediate(() => close()); }
     req.setEncoding("utf8");
@@ -39,13 +42,14 @@ async function startServer(options = {}) {
         if (request.action === "save") return send(200, ModelConfig.save(request, home));
         return send(400, { error: "不支持的模型配置操作" });
       }
+      if (req.url === "/api/tools") return send(200, await tools.run(request));
       return send(200, await agent.run(request));
     } catch (error) { return send(400, { error: error.message }); }
   });
-  const close = async () => { agent.close(); server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); };
+  const close = async () => { agent.close(); tools.close(); server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); };
   await new Promise((resolve, reject) => { server.once("error", reject); server.listen(options.port || 0, "127.0.0.1", resolve); });
   origin = `http://127.0.0.1:${server.address().port}`;
-  return { origin, close, agent, server };
+  return { origin, close, agent, tools, server };
 }
 
 if (require.main === module) startServer().then(app => {

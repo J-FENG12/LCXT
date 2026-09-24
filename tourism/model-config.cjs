@@ -2,6 +2,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { modelConfigPaths } = require("../platform/model-config-paths.cjs");
+const OpenClawTravelTools = require("../platform/openclaw-travel-tools.cjs");
 
 const PROVIDERS = Object.freeze({
   deepseek: { label: "DeepSeek", baseUrl: "https://api.deepseek.com/v1", modelId: "deepseek-chat", requiresKey: true },
@@ -65,6 +66,7 @@ function save(input, home) {
   config.agents = config.agents && typeof config.agents === "object" ? config.agents : {};
   config.agents.defaults = config.agents.defaults && typeof config.agents.defaults === "object" ? config.agents.defaults : {};
   config.agents.defaults.model = `${values.providerId}/${values.modelId}`;
+  OpenClawTravelTools.decorate(config);
   const target = modelConfigPaths(home)[0];
   fs.mkdirSync(path.dirname(target), { recursive: true });
   const temporary = `${target}.${process.pid}.tmp`;

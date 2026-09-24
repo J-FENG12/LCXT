@@ -3,7 +3,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const net = require("node:net");
 const os = require("node:os");
-const required = ["package.json", "tourism/agent-server.cjs", "tourism/build-demo.cjs", "tourism/task-schema.js", "runtime/skills/travel-demand-planner/SKILL.md", "runtime/skills/travel-service-coordinator/SKILL.md", "runtime/skills/travel-content-lab/SKILL.md"];
+const required = ["package.json", "tourism/agent-server.cjs", "tourism/build-demo.cjs", "tourism/task-schema.js", "tourism/task-repository.cjs", "tourism/tool-config.cjs", "tourism/tool-broker.cjs", "tourism/observation-repository.cjs", "tourism/safe-tool-http.cjs", "tourism/search-intent.cjs", "tourism/tool-settings.js", "platform/openclaw-travel-tools.cjs", "runtime/bin/travel-window-host.exe", "runtime/plugins/travel-tools/openclaw.plugin.json", "runtime/plugins/travel-tools/index.js", "runtime/skills/travel-demand-planner/SKILL.md", "runtime/skills/travel-service-coordinator/SKILL.md", "runtime/skills/travel-content-lab/SKILL.md"];
 async function run() {
   const checks = [];
   const major = Number(process.versions.node.split(".")[0]);

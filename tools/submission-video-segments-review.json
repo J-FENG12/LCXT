@@ -1,0 +1,54 @@
+[
+  {
+    "image": ".development/presentation-build/previews-submission-review/slide-01.png",
+    "narration": "景区前台接到一家四口的咨询：两天时间，带着孩子和长者，想玩得有特色，又担心预算和饮食安排。过去，工作人员要在好几个表格和页面之间来回核对。我们做的旅策协同，就是想把这件事接起来。"
+  },
+  {
+    "image": ".development/validation/submission-agent-empty.png",
+    "narration": "使用从这个对话框开始。工作人员直接说清人数、时间、预算和特殊要求，不用先学一套复杂表单。评委第一次打开时，这里没有现成可用的模型，也不会拿到我们的个人密钥。要体验大模型生成，请在模型设置里接入自己有权使用的服务。"
+  },
+  {
+    "image": ".development/validation/submission-skills.png",
+    "narration": "赛题强调的是轻量化 Skill 协同，所以我们没有做一个包办一切的万能技能。这三个本地 Skill 分工很清楚：文旅需求规划负责理解需求和找出可行方案，文旅服务协同负责确认后的接待安排，文旅内容创意负责营销草稿和产品点子。在对话里按需选择，底层各有独立的 Skill 说明和边界。"
+  },
+  {
+    "image": ".development/presentation-build/previews-submission-review/slide-04.png",
+    "narration": "先看需求规划。比如游客说，两名成人、一名儿童、一名长者，周末去云水古城玩两天，预算三千元，还要避开花生。Skill 会把这些话整理成待核对字段，而不是听完就直接改任务。人数、预算、饮食和照护条件都由工作人员确认后再应用。这里的云水古城是虚构实训案例。"
+  },
+  {
+    "image": ".development/video-build/frames/01-blank-workbench.png",
+    "narration": "打开工作台，可以继续检查方案里的每一步。新任务一开始是空白的，不会预装游客信息。这次视频没有使用私人模型账号进行现场生成，接下来我手动载入产品自带、明确标注为虚构的案例，展示同一套规则如何工作。"
+  },
+  {
+    "image": ".development/video-build/frames/02-demo-overview.png",
+    "narration": "这个案例是四人、两天、三千元预算。工作台把候选方案、已知费用、步行量和事实状态放在一起，方便工作人员比较。价格不清楚的项目会留作未知，不会因为系统算不出来就当成零元。"
+  },
+  {
+    "image": ".development/video-build/frames/04-evidence-consultation.png",
+    "narration": "游客问景区能不能去、餐厅能不能照顾过敏需求，不能只靠一句听起来合理的回答。这里每条本地资料都能看到编号、来源、日期和有效状态。证据不够时，就写待核实，尤其是花生交叉接触和无障碍条件，不替商家做承诺。"
+  },
+  {
+    "image": ".development/video-build/frames/03-itinerary-route.png",
+    "narration": "行程按天展开，时间线和路线示意会一起变化。系统检查开放时间、活动时长、交通区间、住宿、餐次、费用和步行量。这里的路线是根据案例中录入的交通关系画出的拓扑示意，不是实时地图，也没有假装查到了真实路况。"
+  },
+  {
+    "image": ".development/presentation-build/previews-submission-review/slide-08.png",
+    "narration": "如果某一天安排太满，不必整份方案推倒重来。工作人员可以选中住宿或某个行程项，回到对话里说明想改哪里。模型给出的是局部提案，先看差异、再确认；应用之后，费用、时间和风险都重新计算。模型部分需要使用者自行配置，这个镜头没有伪装成实时模型操作。"
+  },
+  {
+    "image": ".development/video-build/frames/05-service-deliverable.png",
+    "narration": "确定一个方案后，文旅服务协同 Skill 接手，把它整理成接待日程和核对清单。这里有一道人工确认：任务、选中的方案和确认记录会绑定在一起。后来哪怕只改了一个重要条件，旧确认也不能继续用于交付。"
+  },
+  {
+    "image": ".development/video-build/frames/06-public-projection-marketing.png",
+    "narration": "第二个场景是把已经确认的方案用于营销和产品创意。文旅内容创意 Skill 先给工作人员看哪些公开字段会进入创作，再形成可编辑草稿。游客原话和个人自由文本默认不送出去；草稿也不会替人发布，更不会自动联系商户、预订或付款。"
+  },
+  {
+    "image": ".development/video-build/frames/08-local-check.png",
+    "narration": "交付时，我们提供完整源码、一键部署说明，以及本机演示和离线备用入口。评审版模型配置是独立的，评委需要自己添加。固定测试和离线评测都不消耗真实模型费用；这些结果证明的是程序在测试条件下可复核，不是宣称真实商家数据已经核验。"
+  },
+  {
+    "image": ".development/presentation-build/previews-submission-review/slide-12.png",
+    "narration": "我们希望呈现的不是一张漂亮行程单，而是文旅岗位真能用的一条流程：听懂需求，拿出有依据的方案，由人确认，再安全地做接待和内容工作。真实联网路线、天气和地图还有待接入与验证。谢谢观看。"
+  }
+]

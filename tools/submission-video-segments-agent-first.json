@@ -1,0 +1,54 @@
+[
+  {
+    "image": ".development/presentation-build/previews-agent-first/slide-01.png",
+    "narration": "这是旅策协同 Travel.AI，面向 JBGS-2026-06 文旅智能辅助场景。作品聚焦两个业务场景：游客需求到游住餐方案和接待材料，以及确认方案到营销与产品创意草稿。演示目的地、价格和商户资料均为虚构。"
+  },
+  {
+    "image": "assets/presentation/agent-entry-user-reference.png",
+    "narration": "使用从 Agent 对话界面开始。文旅工作人员可以在这里直接描述游客人数、日期、预算、兴趣、饮食和照护要求，再从同一段对话继续调整方案。左侧的文旅工作台入口用于查看和核对结构化结果。画面为用户提供的产品界面截图，这一镜头没有执行模型调用。"
+  },
+  {
+    "image": ".development/presentation-build/previews-agent-first/slide-03.png",
+    "narration": "专项任务通过中文名称识别。文旅需求规划负责整理需求与候选方案，文旅服务协同负责确认后的接待材料，文旅内容创意负责营销与产品草稿。三个 Skill 分工明确，底层技术标识保持稳定。新安装环境没有预置可用模型；需要模型增强时，由用户自行添加并保管密钥。"
+  },
+  {
+    "image": ".development/presentation-build/previews-agent-first/slide-04.png",
+    "narration": "第一段业务故事是一组虚构游客需求：两名成人、一名儿童和一名长者，在云水古城安排两日游，预算上限三千元，关注非遗与亲子体验，并要求饮食排除花生。模型配置完成后，Agent 可将自然语言整理为待确认的字段草案。字段差异要由工作人员应用，未提及的原有字段保留。这条视频没有调用真实模型，下面使用固定虚构任务展示可复核的后续流程。"
+  },
+  {
+    "image": ".development/video-build/frames/01-blank-workbench.png",
+    "narration": "打开工作台后，初始任务保持空白，不会预装游客信息或虚构结果。界面把咨询问答、方案规划、服务接待、营销与产品、资源管理放在同一任务下。工作人员可以选择载入明确标记的演示案例，也可以在实际使用时从 Agent 对话逐步形成任务。"
+  },
+  {
+    "image": ".development/video-build/frames/02-demo-overview.png",
+    "narration": "这里明确载入云水古城虚构实训案例。工作台呈现四人团队、两日时间窗口、预算、特殊饮食和长者条件，并生成候选方案。预算上限三千元和已知费用分别展示，未知价格不会当作零元。这个页面是工作人员核对方案的地方，不会替人直接下单或作出服务承诺。"
+  },
+  {
+    "image": ".development/video-build/frames/04-evidence-consultation.png",
+    "narration": "文旅咨询需要可追溯的依据。每张本地事实卡都标明编号、资源、来源、日期、有效状态和模拟标识。对于花生排除、交叉接触或无障碍服务，资料不全时系统会保留待核实提示，不把推测写成确定答复。虚构事实仅用于离线实训，不代表真实商家现况。"
+  },
+  {
+    "image": ".development/video-build/frames/03-itinerary-route.png",
+    "narration": "行程方案以逐日时间线和路线拓扑展示。系统依据开放时间、活动时长、逐日窗口以及明确的交通区间生成有界候选，并检查住宿夜数、餐次、费用、步行和预算。这里的路线是本地结构化示意，不是实时地理地图；在线路线、天气和实时路况不在这条演示中冒充已验证能力。"
+  },
+  {
+    "image": ".development/presentation-build/previews-agent-first/slide-08.png",
+    "narration": "方案中的整体需求、住宿和单个行程项都可以作为局部修改目标。使用者回到同一段 Agent 对话，说明具体改动，先核对局部提案，再决定是否应用。应用后确定性核心重新计算费用、时间、步行、事实和风险，旧确认立即失效。本镜头是修改流程说明，没有剪辑成模型现场完成的操作录像。"
+  },
+  {
+    "image": ".development/video-build/frames/05-service-deliverable.png",
+    "narration": "工作人员选定方案后，先同步评估，再勾选已核对并建立当前确认。服务端将任务哈希、方案编号和确认编号绑定，任务变化或请求取消后，旧结果不能继续落地。确认后生成可编辑的接待执行单，列出分日安排、接待重点、费用与待核实事项。固定模板不需要真实模型调用。"
+  },
+  {
+    "image": ".development/video-build/frames/06-public-projection-marketing.png",
+    "narration": "第二个场景复用已确认的方案。营销或产品创意前，工作人员先预览公开字段投影，只让渠道、受众、主题和已确认公开资源进入创作范围。游客原文、个人自由文本与事实正文默认不外发。生成的是可人工编辑的草稿，系统不会自动上传、发布、联系商户、预订或付款。"
+  },
+  {
+    "image": ".development/video-build/frames/08-local-check.png",
+    "narration": "作品提供本机 Agent、源码独立 Web 应用和离线 HTML。主提交链路包含完整源代码与一键部署教程，本机检查不需要登录，也不会上传诊断数据。本次固定环境验证为完整项目测试一百零六项、离线评测二十五项、浏览器检查四十九项全部通过，真实模型调用为零。这些数字是本地测试证据，不代表主办方验收。"
+  },
+  {
+    "image": ".development/presentation-build/previews-agent-first/slide-12.png",
+    "narration": "旅策协同把 Agent 接单、工作台核对、人工确认和安全导出串成一条可复核流程，覆盖游客体验规划与营销创意协同。真实联网搜索、路线服务、天气查询和地理地图仍需单独配置与验证；演示数据不代表真实商家服务承诺。感谢观看。"
+  }
+]

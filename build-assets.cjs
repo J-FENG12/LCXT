@@ -5,6 +5,7 @@ const sourcePath = path.resolve(__dirname, "assets", "desktop-base.js");
 const outputPath = path.resolve(__dirname, "dist", "index-v4.js");
 const modelSettingsPath = path.resolve(__dirname, "internal-model-settings.js");
 const brand = require("./build-travel-brand.cjs").brand();
+const skillDisplayNames = require("./tourism/skill-display-names.js");
 
 function assertContains(source, marker) {
   if (!source.includes(marker)) throw new Error(`Required standalone frontend marker was not found: ${marker}`);
@@ -35,10 +36,16 @@ bundle = bundle.replace(
   `logo:${JSON.stringify({light:brand.symbol,dark:brand.symbol})}`
 );
 bundle = bundle.replace("doctor:!0", "doctor:!1");
+const skillNameResolver = 'function zd(t,e){const n=t.slug||t.key||"";return e==="zh-TW"?t.nameZhTw||t.nameZhCn||t.name||t.nameEn||n:e.startsWith("zh")?t.nameZhCn||t.name||t.nameEn||n:e==="ja"?t.nameJa||t.nameEn||t.name||n:t.nameEn||t.name||t.nameZhCn||n}';
+assertContains(bundle, skillNameResolver);
+bundle = bundle.replace(skillNameResolver, `function zd(t,e){const n=t.slug||t.key||"",s=${JSON.stringify(skillDisplayNames)}[n];return s??(e==="zh-TW"?t.nameZhTw||t.nameZhCn||t.name||t.nameEn||n:e.startsWith("zh")?t.nameZhCn||t.name||t.nameEn||n:e==="ja"?t.nameJa||t.nameEn||t.name||n:t.nameEn||t.name||t.nameZhCn||n)}`);
 const nativeDoctorCall = 'me.openDoctorWindow()';
 const nativeDoctorCallCount = bundle.split(nativeDoctorCall).length - 1;
 if (nativeDoctorCallCount !== 3) throw new Error(`Unexpected native Doctor entry count: ${nativeDoctorCallCount}`);
 bundle = bundle.replaceAll(nativeDoctorCall, 'globalThis.dispatchEvent(new Event("travel-open-local-check"))');
+const composerSubmit = 'Se=rI(T);if(!Se&&!it&&!Ce&&Ue.files.length===0)return;let Fe,gt,Rt,Ot;';
+assertContains(bundle, composerSubmit);
+bundle = bundle.replace(composerSubmit, 'Se=rI(T);if(!Se&&!it&&!Ce&&Ue.files.length===0)return;if(await globalThis.TravelConversationSubmit?.({text:Se,sessionKey:t,skills:Te})){ee(""),r(t,""),P.close(),R.close();return}let Fe,gt,Rt,Ot;');
 for (const [source, replacement] of [
   ['"sidebar.doctor":"Diagnose & Report"', '"sidebar.doctor":"Local Check"'],
   ['"startup.runDiagnostics":"Run diagnostics"', '"startup.runDiagnostics":"Local check"'],
@@ -53,7 +60,7 @@ for (const [source, replacement] of [
   bundle = bundle.replace(source, replacement);
 }
 bundle += `\nglobalThis.TravelBrand=${JSON.stringify(brand)};\n${fs.readFileSync(modelSettingsPath, "utf8")}\n`;
-for (const file of ["task-schema.js", "travel-core.js", "knowledge-core.js", "plan-generator.js", "task-state.js", "deliverables.js", "demo-data.js", "request-editor.js", "travel-workbench.js", "agent-panel.js", "contest-ui.js", "model-settings.js", "brand-ui.js"]) {
+for (const file of ["skill-display-names.js", "task-schema.js", "module-patch.js", "travel-core.js", "knowledge-core.js", "plan-generator.js", "task-state.js", "deliverables.js", "demo-data.js", "request-editor.js", "travel-workbench.js", "agent-panel.js", "contest-ui.js", "travel-journey-view.js", "conversation-flow.js", "tool-settings.js", "brand-ui.js"]) {
   bundle += `\n${fs.readFileSync(path.join(__dirname, "tourism", file), "utf8")}\n`;
 }
 

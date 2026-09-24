@@ -3,6 +3,7 @@
   const buttonId="travel-diagnostics-button",modalId="travel-diagnostics-modal",resultId="travel-diagnostics-result";
   const retiredDeveloper=String.fromCharCode(30021,25463,36890);
   const hiddenMarketCategories=new Set(["智能供应链","智能制造",`${retiredDeveloper}服务`,"电商采集","私域运营"]);
+  const skillDisplayNames=globalThis.TravelSkillDisplayNames||Object.freeze({});
   const escapeHtml=value=>String(value??"").replace(/[&<>\"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'\"':"&quot;","'":"&#39;"})[char]);
   const isRetiredDeveloper=skill=>String(skill?.author??"").trim().startsWith(retiredDeveloper);
   function filterSkillMarketCards(root=document){
@@ -20,7 +21,28 @@
     }
     return removed;
   }
-  globalThis.TravelSkillMarketPolicy=Object.freeze({isRetiredDeveloper,filterSkillMarketCards,filterSkillMarketCategories});
+  function localizeSkillNames(root=document){
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    let changed=0,node;
+    while((node=walker.nextNode())){
+      if(/^(SCRIPT|STYLE|TEXTAREA|CODE|PRE)$/.test(node.parentElement?.tagName||""))continue;
+      const text=node.nodeValue.trim(),label=skillDisplayNames[text];
+      if(!label)continue;
+      const parent=node.parentElement;
+      if(!parent?.closest('[data-testid^="skill-card-"], [data-testid="slash-command-menu"], [data-mention="true"][data-mention-type="skill"], [role="option"], [role="menuitem"], [role="listbox"]'))continue;
+      node.nodeValue=node.nodeValue.replace(text,label);changed++;
+    }
+    return changed;
+  }
+  function localizeWelcome(root=document){
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    let node;
+    while((node=walker.nextNode())){
+      if(/^(SCRIPT|STYLE|TEXTAREA|CODE|PRE)$/.test(node.parentElement?.tagName||""))continue;
+      if(node.nodeValue.includes("你的AI企业经营管理助手"))node.nodeValue=node.nodeValue.replaceAll("你的AI企业经营管理助手","你的文旅服务与内容协同助手");
+    }
+  }
+  globalThis.TravelSkillMarketPolicy=Object.freeze({isRetiredDeveloper,filterSkillMarketCards,filterSkillMarketCategories,localizeSkillNames,skillDisplayNames});
   function hideLegacyDiagnostics(){
     for(const button of document.querySelectorAll("button")){
       const label=`${button.textContent} ${button.getAttribute("aria-label")||""} ${button.title||""}`;
@@ -45,7 +67,7 @@
     if(document.getElementById(buttonId))return;
     const button=document.createElement("button");
     button.id=buttonId;button.type="button";button.textContent="✓ 本机检查";
-    button.style.cssText="position:fixed;left:16px;bottom:16px;z-index:2147483000;border:1px solid #d6dbe4;border-radius:12px;background:#fff;color:#425466;padding:10px 16px;font:14px system-ui;box-shadow:0 6px 18px rgba(15,23,42,.12);cursor:pointer";
+    button.style.cssText="position:fixed;left:18px;bottom:16px;z-index:2147483000;border:1px solid #d6dbe4;border-radius:12px;background:#fff;color:#425466;padding:10px 16px;font:14px system-ui;box-shadow:0 6px 18px rgba(15,23,42,.12);cursor:pointer";
     const modal=document.createElement("div");
     modal.id=modalId;modal.hidden=true;
     modal.style.cssText="position:fixed;inset:0;z-index:2147483640;background:rgba(15,23,42,.35);display:none;align-items:center;justify-content:center;padding:24px";
@@ -61,9 +83,15 @@
     document.title="旅策协同 · 文旅智能辅助";
     let icon=document.querySelector('link[rel="icon"]');if(!icon){icon=document.createElement("link");icon.rel="icon";document.head.append(icon);}icon.href=brand.symbol;
     const node=document.querySelector(".tv-brand");if(node){node.replaceChildren();const img=document.createElement("img");img.src=brand.symbol;img.alt="旅策协同";img.style.cssText="display:inline-block;width:38px;height:38px;vertical-align:middle;margin-right:11px";node.append(img,document.createTextNode("旅策协同 · Travel.AI"));}
-    ensureDiagnostics();hideLegacyDiagnostics();filterSkillMarketCards();filterSkillMarketCategories();
+    ensureDiagnostics();hideLegacyDiagnostics();filterSkillMarketCards();filterSkillMarketCategories();localizeSkillNames();localizeWelcome();
   }
-  const observer=new MutationObserver(()=>{hideLegacyDiagnostics();ensureDiagnostics();filterSkillMarketCards();filterSkillMarketCategories();});
+  const observer=new MutationObserver(records=>{
+    hideLegacyDiagnostics();ensureDiagnostics();filterSkillMarketCards();filterSkillMarketCategories();
+    for(const record of records)for(const node of record.addedNodes){
+      if(node.nodeType===Node.TEXT_NODE){localizeSkillNames(node.parentElement||document);localizeWelcome(node.parentElement||document);}
+      else if(node.nodeType===Node.ELEMENT_NODE||node.nodeType===Node.DOCUMENT_FRAGMENT_NODE){localizeSkillNames(node);localizeWelcome(node);}
+    }
+  });
   globalThis.addEventListener("travel-open-local-check",openDiagnostics);
   document.addEventListener("travel-workbench-ready",apply);
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>{apply();observer.observe(document.body,{childList:true,subtree:true});});else{apply();observer.observe(document.body,{childList:true,subtree:true});}

@@ -2,8 +2,8 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const parts = [
-  "task-schema.js", "travel-core.js", "knowledge-core.js", "plan-generator.js", "task-state.js",
-  "deliverables.js", "demo-data.js", "request-editor.js", "travel-workbench.js", "agent-panel.js", "contest-ui.js", "model-settings.js", "brand-ui.js"
+  "skill-display-names.js", "task-schema.js", "module-patch.js", "travel-core.js", "knowledge-core.js", "plan-generator.js", "task-state.js",
+  "deliverables.js", "demo-data.js", "request-editor.js", "travel-workbench.js", "agent-panel.js", "contest-ui.js", "travel-journey-view.js", "conversation-flow.js", "model-settings.js", "tool-settings.js", "brand-ui.js"
 ];
 const brand = require("../build-travel-brand.cjs").brand();
 const scripts = `globalThis.TravelBrand=${JSON.stringify(brand)};\n` + parts.map(name => fs.readFileSync(path.join(__dirname, name), "utf8")).join("\n");
